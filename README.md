@@ -32,4 +32,4 @@ pro.daily()       # 获取日K数据（未赋权）
 pro.trade_cal()   # 获取交易日历
 ```
 
-![Loading_Data](https://github.com/FDUJiaG/QT_Test/tree/master/imag/Loading_Data.png)
+![](./imag/Loading_Data.png)
