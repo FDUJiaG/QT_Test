@@ -32,4 +32,11 @@ pro.daily()       # 获取日K数据（未赋权）
 pro.trade_cal()   # 获取交易日历
 ```
 
-![](./imag/Loading_Data.png)
+## 示例
+![数据下载](./imag/Loading_Data.png)
+
+![](./imag/MySQL_Data.png)
+
+![](./imag/SVM_ans.png)
+![](./imag/SVM_Model_Evaluate.png)
+![](./imag/Portfolio.png)
