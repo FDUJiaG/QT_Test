@@ -20,5 +20,15 @@
 import datetime
 import tushare as ts
 import pymysql
+import pymysql.cursors
+from sklearn import svm
+import numpy as np
+import pandas as pd
+import sqlalchemy
+```
 
-## 主要函数
+## 主要接口函数
+```python
+pro.daily()       # 获取日K数据（未赋权）
+pro.trade_cal()   # 获取交易日历
+```
