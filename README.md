@@ -19,7 +19,6 @@
 ```python
 import datetime
 import tushare as ts
-import pymysql
 import pymysql.cursors
 from sklearn import svm
 import numpy as np
