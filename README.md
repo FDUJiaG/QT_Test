@@ -31,3 +31,19 @@ import sqlalchemy
 pro.daily()       # 获取日K数据（未赋权）
 pro.trade_cal()   # 获取交易日历
 ```
+
+## 示例
+### 数据下载
+![](./imag/Loading_Data.png)
+
+### 存储到MySQL
+![](./imag/MySQL_Data.png)
+
+### 单个SVM结果
+![](./imag/SVM_ans.png)
+
+### SVM模型评价存储
+![](./imag/SVM_Model_Evaluate.png)
+
+### 仓位管理
+![](./imag/Portfolio.png)
