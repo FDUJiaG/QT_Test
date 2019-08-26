@@ -111,9 +111,11 @@ import math
 ### 数据下载
 **股票行情数据获取** <p align="left">
 
- <img src='./imag/Loading_Data.png' height="180" />
+ <img src='./imag/Loading_Stock_Data.png' width=260 />
 
-下载交易序列
+**指数行情数据获取** <p align="left">
+
+ <img src='./imag/Loading_Index_Data.png' width=260 />
 
 ### 存储到MySQL
 ![](./imag/Stock_Pool_Data.png)
@@ -122,7 +124,7 @@ import math
 
 <p align="left">
 
- <img src='imag/SVM_ans.png' height=50>
+ <img src='imag/SVM_ans.png' width=260>
 
 ### SVM模型评价存储
 
