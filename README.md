@@ -107,7 +107,9 @@ import math
 
 ## 示例
 ### 数据下载
-<img src='./imag/Loading_Data.png' height="200" align=left />
+<p align="left">
+
+ <img src='./imag/Loading_Data.png' height="200" />
 
 下载交易序列
 
