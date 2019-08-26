@@ -6,7 +6,7 @@
 
 ### Preparation
 
-- SQL表
+- SQL Table
 
 ### Input
 
@@ -107,7 +107,9 @@ import math
 
 ## 示例
 ### 数据下载
-<img src='imag/Loading_Data.png' height="200" div align=left />
+<img src='./imag/Loading_Data.png' height="200" align=left />
+
+下载交易序列
 
 ### 存储到MySQL
 ![](./imag/Stock_Pool_Data.png)
