@@ -107,7 +107,7 @@ import math
 
 ## 示例
 ### 数据下载
-<img src='imag/Loading_Data.png' style="zoom:60%">
+<img src='imag/Loading_Data.png' align=left height="200">
 
 ### 存储到MySQL
 ![](./imag/Stock_Pool_Data.png)
