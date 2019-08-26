@@ -118,12 +118,18 @@ import math
 
 ### 单个SVM结果
 
-<img src='imag/SVM_ans.png' style="float:left;zoom:60%">
+<p align="left">
+
+ <img src='imag/SVM_ans.png' height=50>
 
 ### SVM模型评价存储
 
-<img src='imag/SVM_Model_Evaluate.png' style="float:left;zoom:50%">
+<p align="left">
+
+ <img src='imag/SVM_Model_Evaluate.png' height=400 />
 
 ### 仓位管理
 
-<img src='imag/Portfolio.png' style="float:left;zoom:60%">
+<p align="left">
+
+ <img src='imag/Portfolio.png' height=480 />
