@@ -2,11 +2,11 @@
 
 主要为了重现一套比较简单且完备的量化框架，该框架基于现代投资组合理论，并应用主流的机器学习算法进行分析。 旨在初步形成一个量化投资的思路，辅助构建科学合理的投资策略。
 
-## Anticipate Result
+## Anticipate Process
 
 ### Preparation
 
-- SQL Table
+- [SQL Queries](https://github.com/FDUJiaG/QT_Test/tree/master/sqlQueries)
 
 ### Input
 
@@ -57,9 +57,9 @@ pro = ts.pro_api('your token')
 ### Main Data API
 
 ```python
-pro.daily()					# 获取日K数据（未赋权）
-pro.index_daily()		# 获取指数行情
-pro.trade_cal()			# 获取交易日历
+pro.daily()       # 获取日K数据（未赋权）
+pro.index_daily() # 获取指数行情
+pro.trade_cal()   # 获取交易日历
 ```
 
 ### Package
