@@ -10,9 +10,9 @@ import tushare as ts
 # 返回的resu中 特征值按由小到大排列，对应的是其特征向量
 def get_portfolio(stock_list, state_dt, para_window):
     # 建数据库连接，设置Tushare的token
-    db = pymysql.connect(host='localhost', user='root', passwd='jiage', db='Stocks', charset='utf8mb4')
+    db = pymysql.connect(host='localhost', user='root', passwd='your password', db='your dbname', charset='utf8mb4')
     cursor = db.cursor()
-    ts.set_token('ab8cda03b983bbe19fb5e50cd01c23581fbac2870eac95465b253777')
+    ts.set_token('your token')
     pro = ts.pro_api()
 
     portfilio = stock_list

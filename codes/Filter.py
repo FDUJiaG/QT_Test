@@ -6,7 +6,7 @@ import Operator
 
 def filter_main(stock_new, state_dt, predict_dt, poz):
     # 建立数据库连接
-    db = pymysql.connect(host='localhost', user='root', passwd='jiage', db='Stocks', charset='utf8mb4')
+    db = pymysql.connect(host='localhost', user='root', passwd='your password', db='your dbname', charset='utf8mb4')
     cursor = db.cursor()
 
     # 先更新持股天数

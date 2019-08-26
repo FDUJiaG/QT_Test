@@ -12,7 +12,7 @@ class data_collect(object):
 
     def collectDATA(self, in_code, start_dt, end_dt):
         # 建立数据库连接，获取日线基础行情(开盘价，收盘价，最高价，最低价，成交量，成交额)
-        db = pymysql.connect(host='localhost', user='root', passwd='jiage', db='Stocks', charset='utf8mb4')
+        db = pymysql.connect(host='localhost', user='root', passwd='your password', db='your dbname', charset='utf8mb4')
         cursor = db.cursor()
         sql_done_set = "SELECT * FROM stock_all a where stock_code = '%s' and state_dt >= '%s' and state_dt <= '%s' order by state_dt asc" % (in_code, start_dt, end_dt)
         cursor.execute(sql_done_set)

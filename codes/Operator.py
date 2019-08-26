@@ -5,7 +5,7 @@ import Deal
 
 def buy(stock_code, opdate, buy_money):
     # 建立数据库连接
-    db = pymysql.connect(host='localhost', user='root', passwd='jiage', db='Stocks', charset='utf8mb4')
+    db = pymysql.connect(host='localhost', user='root', passwd='your password', db='your dbname', charset='utf8mb4')
     cursor = db.cursor()
     deal_buy = Deal.Deal(opdate)
 
@@ -54,7 +54,7 @@ def buy(stock_code, opdate, buy_money):
 
 def sell(stock_code, opdate, predict):
     # 建立数据库连接
-    db = pymysql.connect(host='localhost', user='root', passwd='jiage', db='Stocks', charset='utf8mb4')
+    db = pymysql.connect(host='localhost', user='root', passwd='your password', db='your dbname', charset='utf8mb4')
     cursor = db.cursor()
 
     deal = Deal.Deal(opdate)

@@ -7,7 +7,7 @@ import pymysql
 if __name__ == '__main__':
 
     # 设置tushare pro的token并获取连接, 仅首次和重置时需获取, 对于日K每分钟最多调取两百次
-    ts.set_token('ab8cda03b983bbe19fb5e50cd01c23581fbac2870eac95465b253777')
+    ts.set_token('your token')
     pro = ts.pro_api()
 
     # 设定获取日线行情的初始日期和终止日期，暂时将终止日期设定为昨天
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     end_dt = time_temp.strftime('%Y%m%d')
 
     # 建立数据库连接,剔除已入库的部分
-    db = pymysql.connect(host='localhost', user='root', passwd='jiage', db='Stocks', charset='utf8mb4')
+    db = pymysql.connect(host='localhost', user='root', passwd='your password', db='your dbname', charset='utf8mb4')
     cursor = db.cursor()
 
     # 设定需要获取数据的股票池, 取云计算相关的: 中兴通讯, 远光软件, 中国长城, 东方财富, 用友网络, 中科曙光, 中国软件, 浪潮信息, 宝信软件

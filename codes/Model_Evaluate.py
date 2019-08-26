@@ -9,9 +9,9 @@ import tushare as ts
 
 def model_eva(stock, state_dt, para_window, para_dc_window):
     # 建立数据库连接，设置tushare token
-    db = pymysql.connect(host='localhost', user='root', passwd='jiage', db='Stocks', charset='utf8mb4')
+    db = pymysql.connect(host='localhost', user='root', passwd='your password', db='your dbname', charset='utf8mb4')
     cursor = db.cursor()
-    ts.set_token('ab8cda03b983bbe19fb5e50cd01c23581fbac2870eac95465b253777')
+    ts.set_token('your token')
     pro = ts.pro_api()
 
     # 建评估时间序列, para_window参数代表回测窗口长度

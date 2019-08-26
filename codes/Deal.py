@@ -15,7 +15,7 @@ class Deal(object):
 
     def __init__(self, state_dt):
         # 建立数据库连接
-        db = pymysql.connect(host='localhost', user='root', passwd='jiage', db='Stocks', charset='utf8mb4')
+        db = pymysql.connect(host='localhost', user='root', passwd='your password', db='your dbname', charset='utf8mb4')
         cursor = db.cursor()
         try:
             sql_select = 'select * from my_capital a order by seq desc limit 1'

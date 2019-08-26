@@ -31,7 +31,7 @@ df = df.sort_values(by="trade_date", ascending=True)
 print(df)
 
 # 连接数据库
-db = pymysql.connect(host='localhost', user='root', passwd='jiage', db='Stocks', charset='utf8mb4')
+db = pymysql.connect(host='localhost', user='root', passwd='your password', db='your dbname', charset='utf8mb4')
 cursor = db.cursor()
 
 # 逐条导入指数数据
