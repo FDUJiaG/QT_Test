@@ -57,9 +57,9 @@ pro = ts.pro_api('your token')
 ### Main Data API
 
 ```python
-pro.daily()       # 获取日K数据（未赋权）
-pro.index_daily()	# 获取指数行情
-pro.trade_cal()   # 获取交易日历
+pro.daily()					# 获取日K数据（未赋权）
+pro.index_daily()		# 获取指数行情
+pro.trade_cal()			# 获取交易日历
 ```
 
 ### Package
