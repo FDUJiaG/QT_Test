@@ -1,3 +1,5 @@
+# 数据采集至数据库
+
 import datetime
 import tushare as ts
 import pymysql
@@ -5,7 +7,7 @@ import pymysql
 if __name__ == '__main__':
 
     # 设置tushare pro的token并获取连接, 仅首次和重置时需获取, 对于日K每分钟最多调取两百次
-    ts.set_token('your_token')
+    ts.set_token('ab8cda03b983bbe19fb5e50cd01c23581fbac2870eac95465b253777')
     pro = ts.pro_api()
 
     # 设定获取日线行情的初始日期和终止日期，暂时将终止日期设定为昨天
@@ -14,11 +16,12 @@ if __name__ == '__main__':
     end_dt = time_temp.strftime('%Y%m%d')
 
     # 建立数据库连接,剔除已入库的部分
-    db = pymysql.connect(host='localhost', user='root', passwd='your_password', db='your_db_name', charset='utf8mb4')
+    db = pymysql.connect(host='localhost', user='root', passwd='jiage', db='Stocks', charset='utf8mb4')
     cursor = db.cursor()
 
-    # 设定需要获取数据的股票池, 取云计算相关的: 工业富联, 中兴通讯, 远光软件, 中国长城, 东方财富
-    stock_pool = ['601138.SH', '000063.SZ', '002063.SZ', '000066.SZ', '300059.SZ']
+    # 设定需要获取数据的股票池, 取云计算相关的: 中兴通讯, 远光软件, 中国长城, 东方财富, 用友网络, 中科曙光, 中国软件, 浪潮信息, 宝信软件
+    stock_pool = ['000063.SZ', '002063.SZ', '000066.SZ', '300059.SZ', '600588.SH', '603019.SH',
+                  '600536.SH', '000977.SZ', '600845.SH']
     total = len(stock_pool)
     # 循环获取单个股票的日线行情
     for i in range(len(stock_pool)):
@@ -33,11 +36,11 @@ if __name__ == '__main__':
             print('No DATA Code: ' + str(i))
             continue
         for j in range(c_len):
-            resu0 = list(df.ix[c_len-1-j])
+            resu0 = list(df.iloc[c_len-1-j])
             resu = []
             for k in range(len(resu0)):
                 if str(resu0[k]) == 'nan':
-                    resu.append(-1)
+                    resu.append(-8642.97531)
                 else:
                     resu.append(resu0[k])
             state_dt = (datetime.datetime.strptime(resu[1], "%Y%m%d")).strftime('%Y-%m-%d')
@@ -53,8 +56,8 @@ if __name__ == '__main__':
     db.close()
     print('All Finished!')
 
-# pro.daily()参数说明
-'''
+''' pro.daily()参数说明
+
 输入参数:
 ts_code:    股票代码(二选一)
 trade_date: 交易日期(二选一)
