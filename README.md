@@ -5,13 +5,13 @@
 ## 主要过程
 
 - 数据采集预处理后建模
-  - 数据采集
+  - 利用[Tushare](https://tushare.pro/document/1?doc_id=131)进行交易数据采集（股票，指数）
   - 简单数据预处理，生成训练集
   - 利用SVM算法进行建模
 
-- 模型简单评估和仓位管理（完成部分）
+- 模型简单评估和仓位管理
   - Precision, Recall, F1值计算
-  -  仓位管理
+  -  基于[马科维茨理论](https://mp.weixin.qq.com/s/neCSaWK0c4jzWwCfDVFA6A)的仓位管理
 
 - 模拟交易测试及回测（未开始）
 
@@ -37,7 +37,7 @@ pro.trade_cal()   # 获取交易日历
 ![](./imag/Loading_Data.png)
 
 ### 存储到MySQL
-![](./imag/MySQL_Data.png)
+![](./imag/Stock_Pool_Data.png)
 
 ### 单个SVM结果
 ![](./imag/SVM_ans.png)
