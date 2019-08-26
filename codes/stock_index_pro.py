@@ -28,7 +28,7 @@ df.pop('ts_code')
 order = ['trade_date', 'stock_code', 'close', 'open', 'high', 'low', 'pre_close', 'change', 'pct_chg', 'vol', 'amount']
 df = df[order]
 df = df.sort_values(by="trade_date", ascending=True)
-print(df)
+# print(df)
 
 # 连接数据库
 db = pymysql.connect(host='localhost', user='root', passwd='your password', db='your dbname', charset='utf8mb4')
@@ -61,6 +61,7 @@ for i in range(df_len):
     except Exception as err:
         continue
 
+print('Finish Loading %s Index Data!!!' % df['stock_code'][0])
 # 关闭指针及数据库
 cursor.close()
 db.close()
