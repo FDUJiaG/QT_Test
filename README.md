@@ -2,7 +2,7 @@
 
 主要为了重现一套比较简单且完备的量化框架，该框架基于现代投资组合理论，并应用主流的机器学习算法进行分析。 旨在初步形成一个量化投资的思路，辅助构建科学合理的投资策略。
 
-## 预期效果
+## Anticipate Result
 
 ### Preparation
 
@@ -17,18 +17,20 @@
 
 ### Output
 
-## 环境准备​
+
+
+## Dependencies
 
 建议使用Python版本：3.6及以上
 
-### 安装及升级tushare
+### Installation or Upgrade for Tushare
 
 ```shell
 pip install tushare
 pip install tushare --upgrade
 ```
 
-### 导入tushare
+### Import Tushare
 
 ```python
 import tushare as ts
@@ -36,7 +38,7 @@ import tushare as ts
 
 tushare版本需大于1.2.10
 
-### 设置token
+### Set Token
 
 ```python
 ts.set_token('your token')
@@ -44,7 +46,7 @@ ts.set_token('your token')
 
 完成调取tushare数据凭证的设置，通常只需要设置一次
 
-### 初始化pro接口
+### Initialize Pro API
 
 ```python
 pro = ts.pro_api()
@@ -52,7 +54,7 @@ pro = ts.pro_api()
 pro = ts.pro_api('your token')
 ```
 
-### 主要接口函数
+### Main Data API
 
 ```python
 pro.daily()       # 获取日K数据（未赋权）
@@ -60,22 +62,22 @@ pro.index_daily()	# 获取指数行情
 pro.trade_cal()   # 获取交易日历
 ```
 
-### 主要包
+### Package
 
-#### 时间处理
+#### Time Handle
 
 ```python
 import datetime
 ```
 
-#### MySql相关
+#### MySql Handle
 
 ```python
 import pymysql.cursors
 import sqlalchemy
 ```
 
-#### 数据处理
+#### Data Handle
 
 ```python
 import numpy as np
@@ -107,9 +109,9 @@ import math
 
 ## 示例
 ### 数据下载
-<p align="left">
+**股票行情数据获取** <p align="left">
 
- <img src='./imag/Loading_Data.png' height="200" />
+ <img src='./imag/Loading_Data.png' height="180" />
 
 下载交易序列
 
@@ -132,4 +134,4 @@ import math
 
 <p align="left">
 
- <img src='imag/Portfolio.png' height=480 />
+ <img src='imag/Portfolio.png' height=450 />
