@@ -12,22 +12,40 @@
 
 - Stock Pool
 - Base Stock Index
+- Interval of Loopback Test
+- Windows of Preproession (optional, default = 365)
+- Windows of Loopback Trainning Test (optional, default = 90)
+- Windows of Loopack Portfolio (optional, default = year)
+- Change Frequency of Portfolio (optional, default =5)
 
 ### Main Program
 
+```shell
+$ python Init_StockALL_Sp.py
+$ python stock_index_pro.py
+$ python main_pro.py
+```
+
 ### Output
 
-
+- Daily Trading Data in Stock Pool and Base Index
+- Result of SVM Model Evaluation
+- The Capital Situation during Loopback Test
+- The Stocks Holding in Last Loopback Test Day
+- Effect Index of Quantization
+- Visualization of Return and Withdrawal
 
 ## Dependencies
 
-建议使用Python版本：3.6及以上
+测试的Python版本：3.6.8
+
+测试的Anaconda版本：1.9.6
 
 ### Installation or Upgrade for Tushare
 
 ```shell
-pip install tushare
-pip install tushare --upgrade
+$ pip install tushare
+$ pip install tushare --upgrade
 ```
 
 ### Import Tushare
@@ -105,7 +123,7 @@ import math
 - 模拟交易，包括：获取资金账户[数据](https://github.com/FDUJiaG/QT_Test/blob/master/codes/Deal.py)，执行买卖[操作](https://github.com/FDUJiaG/QT_Test/blob/master/codes/Operator.py)，更新持仓天数及买卖[逻辑](https://github.com/FDUJiaG/QT_Test/blob/master/codes/Filter.py)，更新资产表[数据](https://github.com/FDUJiaG/QT_Test/blob/master/codes/Cap_Update_daily.py)等
 - 策略框架下，进行[回测](https://github.com/FDUJiaG/QT_Test/blob/master/codes/main_pro.py)并计时
 - 计算并返回量化策略[评估指标](https://www.jianshu.com/p/363aa2dd3441)：Return，Withdrawal，Sharp，Risk，IR及Tracking Error等
-- 对于Return，Withdrawal的可视化展示
+- 对于Return，Withdrawal的[可视化展示](###Return，Withdrawal的可视化)
 
 ## 示例
 ### 数据下载
@@ -137,3 +155,9 @@ import math
 <p align="left">
 
  <img src='imag/Portfolio.png' height=450 />
+
+### Return，Withdrawal的可视化
+
+<p align="left">
+
+ <img src='imag/LoopBack_190724_190823.png' height=425 />
