@@ -132,6 +132,10 @@ import math
 
 **数据获取**
 
+默认获取从预设时间（我们定义为2010年第1个交易日）到最邻近交易日，股票池所有交易日的行情数据
+
+注意更改[Init_StockALL_Sp.py](https://github.com/FDUJiaG/QT_Test/blob/master/codes/Init_StockALL_Sp.py)中的股票池
+
 ```python
 # 设定需要获取数据的股票池, 比如与云计算、软件板块相关的标的
 # 中兴通讯, 远光软件, 中国长城, 东方财富, 用友网络, 中科曙光, 中国软件, 浪潮信息, 宝信软件
@@ -155,9 +159,19 @@ data = pro.stock_basic()
 
  <img src='./imag/Stock_Pool_Data.png' width=700 />
 
+**注意**
+
+对于使用[main_pro.py](https://github.com/FDUJiaG/QT_Test/blob/master/codes/main_pro.py)正式回测时，我们选择的股票池必须是前述Init_StockALL_Sp.py中股票的子集，且为了后续构建资产组合中Eig不至于过少，规定股票池的度不小于5
+
+由于我们在分析不同问题时，从Init_StockALL_Sp.py中获取标的的数量较为庞大（比如超过1000只股票），但在回测中标的股票数不可能过于庞大（算力限制，一段时间内主成分也不会过多），比如我们在main_pro.py中的股票池标的数就选为最小的5，在[stock_info](https://github.com/FDUJiaG/QT_Test/blob/master/sqlT_to_csv/stock_info.csv)表中会优先精简上述的[stock_all](https://github.com/FDUJiaG/QT_Test/blob/master/sqlT_to_csv/stock_all.csv)表，既相当于从自己获取的数据库中，抓取回测所需股票池中的标的行情数据，这样会在一定程度上提高查询速度，示例不再赘述
+
 #### 指数行情
 
 **数据获取**
+
+默认获取从预设时间（我们定义为2010年第1个交易日）到最邻近交易日，参考指数所有交易日的行情数据
+
+注意更改[stock_index_pro.py](https://github.com/FDUJiaG/QT_Test/blob/master/codes/stock_index_pro.py)中的基准指数
 
 | 指数名称 | 赋予简称 | 交易所/Tushare编码     |
 | -------- | -------- | ---------------------- |
@@ -189,11 +203,50 @@ df['stock_code'] = 'HS300'
 
 ### 单个SVM结果
 
-<p align="left">
+对于涨跌判断的建模，来自对获取数据的特征，基于SVM做分类问题
+
+```python
+from sklearn import svm
+import DC
+# DC是将原始行情数据划分成SVM训练的各项数据集的预处理类
+
+dc = DC.data_collect(stock, start_date, end_date)
+train = dc.data_train           # 训练集
+target = dc.data_target         # 目标集
+test_case = [dc.test_case]      # 测试集
+model = svm.SVC()               # 建模
+model.fit(train, target)        # 训练
+ans2 = model.predict(test_case) # 预测
+```
+
+**运行结果** <p align="left">
 
  <img src='imag/SVM_ans.png' width=260>
 
-### SVM模型评价存储
+### SVM模型评价
+
+有了单个SVM结果后，就可以通过遍历股票池中的标的，并对比SVM训练时，测试区间中的真实情况给予评价
+
+$Acc (Precision)= \frac{Tp(预测上涨且正确)}{Tp+Fp(预测上涨实际不上涨)}$
+
+$Acc(Recall) = \frac{Tp}{Tp+Fn(预测不上涨但实际上涨)}$
+
+$\begin{equation}
+F1 =\begin{cases}
+\begin{array}{cc}
+0, & Precision*Recall=0 \\
+\frac{2*Precision*Recall}{Precision + Recall}, & else
+\end{array}
+\end{cases}
+\end{equation}$
+
+$ACC\_Neg=\frac{Tn(预测为不上涨且正确)}{Tn+Fn(预测为不上涨但实际上涨)}$
+
+部分效果如下 <p align="left">
+
+ <img src='imag/Model_Evaluate.png' width=650>
+
+再遍历所有回测区间内的交易日，来给出全部的预测情况，对比回测区间内的真实情况
 
 <p align="left">
 
