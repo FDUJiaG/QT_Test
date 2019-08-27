@@ -227,20 +227,20 @@ ans2 = model.predict(test_case) # 预测
 
 有了单个SVM结果后，就可以通过遍历股票池中的标的，并对比SVM训练时，测试区间中的真实情况给予评价
 
-$Acc (Precision)= \frac{Tp(预测上涨且正确)}{Tp+Fp(预测上涨实际不上涨)}$
+$$Acc (Precision)= \frac{Tp(预测上涨且正确)}{Tp+Fp(预测上涨实际不上涨)}$$
 
-$Acc(Recall) = \frac{Tp}{Tp+Fn(预测不上涨但实际上涨)}$
+$$Acc(Recall) = \frac{Tp}{Tp+Fn(预测不上涨但实际上涨)}$$
 
-$\begin{equation}
+$$\begin{equation}
 F1 =\begin{cases}
 \begin{array}{cc}
 0, & Precision*Recall=0 \\
 \frac{2*Precision*Recall}{Precision + Recall}, & else
 \end{array}
 \end{cases}
-\end{equation}$
+\end{equation}$$
 
-$ACC\_Neg=\frac{Tn(预测为不上涨且正确)}{Tn+Fn(预测为不上涨但实际上涨)}$
+$$ACC\_Neg=\frac{Tn(预测为不上涨且正确)}{Tn+Fn(预测为不上涨但实际上涨)}$$
 
 部分效果如下 <p align="left">
 
