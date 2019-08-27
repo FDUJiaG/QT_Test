@@ -1,5 +1,7 @@
 # QT_Test
 
+[**Return to Repositories**](https://github.com/FDUJiaG/QT_Test)
+
 本测试旨在重现一套比较简单且完备的量化框架，该框架基于现代投资组合理论，并应用主流的机器学习算法（SVM）进行分析。 旨在初步形成一个量化投资的思路，辅助构建科学合理的投资策略
 
 ## Anticipate Process
@@ -149,9 +151,16 @@ stock_pool = ['000063.SZ', '002063.SZ', '000066.SZ', '300059.SZ', '600588.SH', '
 data = pro.stock_basic()
  ```
 
-<p align="left">
 
- <img src='./imag/Loading_Stock_Data.png' width=260 />
+ <img src='./imag/Loading_Stock_Data.png' width=260 align=left />
+
+
+
+
+
+
+
+
 
 **存储至MySQL**
 
@@ -191,7 +200,6 @@ df = pro.index_daily(ts_code='000300.SH')
 df['stock_code'] = 'HS300'
 ```
 
-<p align="left">
 
  <img src='./imag/Loading_Index_Data.png' width=260 />
 
@@ -227,20 +235,22 @@ ans2 = model.predict(test_case) # 预测
 
 有了单个SVM结果后，就可以通过遍历股票池中的标的，并对比SVM训练时，测试区间中的真实情况给予评价
 
-$$Acc (Precision)= \frac{Tp(预测上涨且正确)}{Tp+Fp(预测上涨实际不上涨)}$$
+机器学习常用评价指标公式如下：
 
-$$Acc(Recall) = \frac{Tp}{Tp+Fn(预测不上涨但实际上涨)}$$
+$Acc (Precision)= \frac{Tp(预测上涨且正确)}{Tp+Fp(预测上涨实际不上涨)}$
 
-$$\begin{equation}
+$Acc(Recall) = \frac{Tp}{Tp+Fn(预测不上涨但实际上涨)}$
+
+$\begin{equation}
 F1 =\begin{cases}
 \begin{array}{cc}
 0, & Precision*Recall=0 \\
 \frac{2*Precision*Recall}{Precision + Recall}, & else
 \end{array}
 \end{cases}
-\end{equation}$$
+\end{equation}$
 
-$$ACC\_Neg=\frac{Tn(预测为不上涨且正确)}{Tn+Fn(预测为不上涨但实际上涨)}$$
+$ACC\_Neg=\frac{Tn(预测为不上涨且正确)}{Tn+Fn(预测为不上涨但实际上涨)}$
 
 部分效果如下 <p align="left">
 
@@ -248,18 +258,25 @@ $$ACC\_Neg=\frac{Tn(预测为不上涨且正确)}{Tn+Fn(预测为不上涨但实
 
 再遍历所有回测区间内的交易日，来给出全部的预测情况，对比回测区间内的真实情况
 
-<p align="left">
 
- <img src='imag/SVM_Model_Evaluate.png' height=400 />
+ <img src='imag/SVM_Model_Evaluate.png' height=400 align=left/>
+
+这里需要注意，在一些其他应用场景（比如医疗，身份识别）中，需要F1分值足够接近1，否则模型毫无意义。但在投资领域，胜率并不能完全反应到收益，比如90%的胜率也存在每次都赚了小钱，但在错误预判时却造成巨额亏损的情况，相反低胜率也存在每次收益较大而使得总收益期望大于0的情形
 
 ### 仓位管理
 
-<p align="left">
+这里需要注意，不要去新股
+
 
  <img src='imag/Portfolio.png' height=450 />
 
 ### Return，Withdrawal的可视化
 
 <p align="left">
+<img src='imag/LoopBack_190724_190823.png' height=425 />
 
- <img src='imag/LoopBack_190724_190823.png' height=425 />
+
+
+
+
+[**Return to Repositories**](https://github.com/FDUJiaG/QT_Test)
