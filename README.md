@@ -29,11 +29,11 @@ $ python main_pro.py
 
 ### Output
 
-- Daily Trading Data in Stock Pool and Base Index
-- Result of SVM Model Evaluation
-- The Capital Situation during Loopback Test
-- The Stocks Holding in Last Loopback Test Day
-- Effect Index of Quantization
+- Daily Trading Data in [Stock Pool](https://github.com/FDUJiaG/QT_Test/blob/master/sqlT_to_csv/stock_all.csv) and [Base Index](https://github.com/FDUJiaG/QT_Test/blob/master/sqlT_to_csv/stock_index_pro.csv)
+- [Result](https://github.com/FDUJiaG/QT_Test/blob/master/sqlT_to_csv/model_ev_resu.csv) of SVM Model Evaluation
+- The [Capital Situation](https://github.com/FDUJiaG/QT_Test/blob/master/sqlT_to_csv/my_capital.csv) during Loopback Test
+- The [Stocks Holding](https://github.com/FDUJiaG/QT_Test/blob/master/sqlT_to_csv/my_stock_pool.csv) in Last Loopback Test Day
+- [Effect Index](https://github.com/FDUJiaG/QT_Test/blob/master/imag/LoopBack.png) of Quantization
 - <a href="###Return，Withdrawal的可视化">Visualization</a> of Return and Withdrawal
 
 ## Dependencies
@@ -126,18 +126,66 @@ import math
 - 计算并返回量化策略[评估指标](https://www.jianshu.com/p/363aa2dd3441)：Return，Withdrawal，Sharp，Risk，IR及Tracking Error等
 - 对于Return，Withdrawal的[可视化展示](###Return，Withdrawal的可视化)
 
-## 示例
-### 数据下载
-**股票行情数据获取** <p align="left">
+## 详细示例
+### 获取数据并存储
+#### 股票行情
+
+**数据获取**
+
+```python
+# 设定需要获取数据的股票池, 比如与云计算、软件板块相关的标的
+# 中兴通讯, 远光软件, 中国长城, 东方财富, 用友网络, 中科曙光, 中国软件, 浪潮信息, 宝信软件
+stock_pool = ['000063.SZ', '002063.SZ', '000066.SZ', '300059.SZ', '600588.SH', '603019.SH', '600536.SH', '000977.SZ', '600845.SH']
+```
+
+如果对于股票代码，所属板块，上市状态，上市日期等情况不甚了解，可以优先查询股票的[基本信息](https://tushare.pro/document/2?doc_id=25)
+
+ ```python
+# 获取股票基本信息列表
+data = pro.stock_basic()
+ ```
+
+<p align="left">
 
  <img src='./imag/Loading_Stock_Data.png' width=260 />
 
-**指数行情数据获取** <p align="left">
+**存储至MySQL**
+
+部分示例 <p align="left">
+
+ <img src='./imag/Stock_Pool_Data.png' width=700 />
+
+#### 指数行情
+
+**数据获取**
+
+| 指数名称 | 赋予简称 | 交易所/Tushare编码     |
+| -------- | -------- | ---------------------- |
+| 上证指数 | SH       | 000001.SH              |
+| 深圳成指 | SZ       | 399001.SZ              |
+| 上证50   | SH50     | 000016.SH              |
+| 沪深300  | HS300    | 000300.SH or 399300.SZ |
+| 中证500  | ZZ500    | 000905.SH or 399905.SZ |
+| 中小板指 | ZX       | 399005.SZ              |
+| 创业板   | CY       | 399006.SZ              |
+
+因为股票池中后续进行回测的股票两市均有，且市值相对较重，所以选择沪深300指数较为合理
+
+```python
+df = pro.index_daily(ts_code='000300.SH')
+# 统一指数标注并删除原复杂指数代码标注
+df['stock_code'] = 'HS300'
+```
+
+<p align="left">
 
  <img src='./imag/Loading_Index_Data.png' width=260 />
 
-### 存储到MySQL
-![](./imag/Stock_Pool_Data.png)
+**存储至MySQL**
+
+部分示例 <p align="left">
+
+ <img src='./imag/Stock_Index.png' width=555 />
 
 ### 单个SVM结果
 
