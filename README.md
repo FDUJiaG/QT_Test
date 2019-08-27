@@ -7,6 +7,7 @@
 ### Preparation
 
 - [SQL Queries](https://github.com/FDUJiaG/QT_Test/tree/master/sqlQueries)
+- [Initial Capital](https://github.com/FDUJiaG/QT_Test/blob/master/sqlQueries/my_capital.sql) of Loopback Test (optional, default = 1 M)
 
 ### Input
 
@@ -37,9 +38,9 @@ $ python main_pro.py
 
 ## Dependencies
 
-测试的Python版本：3.6.8
+测试使用的Python版本：3.6.8
 
-测试的Anaconda版本：1.9.6
+测试使用的Anaconda版本：1.9.6
 
 ### Installation or Upgrade for Tushare
 
