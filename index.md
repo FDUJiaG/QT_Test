@@ -151,16 +151,9 @@ stock_pool = ['000063.SZ', '002063.SZ', '000066.SZ', '300059.SZ', '600588.SH', '
 data = pro.stock_basic()
  ```
 
+ <p align="left">
 
- <img src='./imag/Loading_Stock_Data.png' width=260 align=left />
-
-
-
-
-
-
-
-
+ <img src='./imag/Loading_Stock_Data.png' width=260 />
 
 **存储至MySQL**
 
@@ -209,7 +202,9 @@ df['stock_code'] = 'HS300'
 
  <img src='./imag/Stock_Index.png' width=555 />
 
-### 单个SVM结果
+### 利用SVM建模
+
+#### 单个SVM结果
 
 对于涨跌判断的建模，来自对获取数据的特征，基于SVM做分类问题
 
@@ -231,7 +226,7 @@ ans2 = model.predict(test_case) # 预测
 
  <img src='imag/SVM_ans.png' width=260>
 
-### SVM模型评价
+#### SVM模型评价
 
 有了单个SVM结果后，就可以通过遍历股票池中的标的，并对比SVM训练时，测试区间中的真实情况给予评价
 
@@ -256,7 +251,7 @@ $ACC\_Neg=\frac{Tn(预测为不上涨且正确)}{Tn+Fn(预测为不上涨但实�
 
  <img src='imag/Model_Evaluate.png' width=650>
 
-再遍历所有回测区间内的交易日，来给出全部的预测情况，对比回测区间内的真实情况
+再遍历所有回测区间内的交易日，来给出全部的预测情况及评价指标
 
 
  <img src='imag/SVM_Model_Evaluate.png' height=400 align=left/>
@@ -265,17 +260,66 @@ $ACC\_Neg=\frac{Tn(预测为不上涨且正确)}{Tn+Fn(预测为不上涨但实�
 
 ### 仓位管理
 
-这里需要注意，不要去新股
+当然对于每一小段时间，我们还是需要从指标层面选择较强的标的来构建投资组合，这样在相同的收益率下，我们将承担更小的风险
+
+区分于其他市场（美股等），A股市场没有有效的认沽机制，或者说做空条件过于严苛和高贵，所以我们不能将特征向量中的负值在策略中成为空头开仓，而是必须将其舍去（重置为0），并将特征向量中的正值线性归一化（理论上这一步会极大地降低收益），由于我们需要挖掘期望收益为正的策略，归一化可以增加我们的资金使用效率
+
+**现代投资组合理论的主要实现如下：**
+
+```python
+# 求协方差矩阵
+cov = np.cov(np.array(list_return).T)
+# 求特征值和其对应的特征向量
+ans = np.linalg.eig(cov)
+# 排序，特征向量中负数置0，非负数线性归一
+ans_index = copy.copy(ans[0])
+ans_index.sort()
+resu = []
+for k in range(len(ans_index)):
+    con_temp = []
+    con_temp.append(ans_index[k])
+    content_temp1 = ans[1][np.argwhere(ans[0] == ans_index[k])[0][0]]
+    content_temp2 = []
+    content_sum = np.array([x for x in content_temp1 if x >= 0.00]).sum()
+    for m in range(len(content_temp1)):
+        if content_temp1[m] >= 0 and content_sum > 0:
+            content_temp2.append(content_temp1[m] / content_sum)
+        else:
+            content_temp2.append(0.00)
+    con_temp.append(content_temp2)
+```
+
+对于某一交易日的仓位管理，可以将较长一段时间（回测时选取了2019，所以记得在第一步尽量剔除次新股）的return list传入上述代码来得到
+
+在[Portfolio.py](https://github.com/FDUJiaG/QT_Test/blob/master/codes/Portfolio.py)中，可以返回最小和次小两套特征值和特征向量，分别对应在投资可行域中最小风险组合，以及最佳收益组合（风险稍稍提高，收益明显提高），如下图所示
 
 
  <img src='imag/Portfolio.png' height=450 />
+
+在正式的回测中，我们选取最佳收益组合来作为投资的仓位管理依据
+
+### 回测
+
+
+
+#### 输出结果
+
+ <img src='imag/LoopBack.png' height=300 />
+
+#### 过程信息
+
+ <img src='imag/Capital_Table.png' height=700 />
+
+
+
+ <img src='imag/Stock_Hold.png' height=60 />
 
 ### Return，Withdrawal的可视化
 
 <p align="left">
 <img src='imag/LoopBack_190724_190823.png' height=425 />
 
-
+## 讨论
 
 
 
