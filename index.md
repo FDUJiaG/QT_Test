@@ -1,3 +1,5 @@
+
+
 # QT_Test
 
 [**Return to Repositories**](https://github.com/FDUJiaG/QT_Test)
@@ -124,7 +126,7 @@ import math
 ### 模拟交易测试及回测
 
 - 模拟交易，包括：获取资金账户[数据](https://github.com/FDUJiaG/QT_Test/blob/master/codes/Deal.py)，执行买卖[操作](https://github.com/FDUJiaG/QT_Test/blob/master/codes/Operator.py)，更新持仓天数及买卖[逻辑](https://github.com/FDUJiaG/QT_Test/blob/master/codes/Filter.py)，更新资产表[数据](https://github.com/FDUJiaG/QT_Test/blob/master/codes/Cap_Update_daily.py)等
-- 策略框架下，进行[回测](https://github.com/FDUJiaG/QT_Test/blob/master/codes/main_pro.py)并计时
+- 策略框架下，进行[回测](https://github.com/FDUJiaG/QT_Test/blob/master/codes/main_pro.py)并计时（[回测过程](###回测)图示）
 - 计算并返回量化策略[评估指标](https://www.jianshu.com/p/363aa2dd3441)：Return，Withdrawal，Sharp，Risk，IR及Tracking Error等
 - 对于Return，Withdrawal的[可视化展示](###Return，Withdrawal的可视化)
 
@@ -134,7 +136,7 @@ import math
 
 **数据获取**
 
-默认获取从预设时间（我们定义为2010年第1个交易日）到最邻近交易日，股票池所有交易日的行情数据
+默认获取从预设时间（我们定义为$2010$年第$1$个交易日）到最邻近交易日，股票池所有交易日的行情数据
 
 注意更改[Init_StockALL_Sp.py](https://github.com/FDUJiaG/QT_Test/blob/master/codes/Init_StockALL_Sp.py)中的股票池
 
@@ -289,7 +291,7 @@ for k in range(len(ans_index)):
     con_temp.append(content_temp2)
 ```
 
-对于某一交易日的仓位管理，可以将较长一段时间（回测时选取了2019，所以记得在第一步尽量剔除次新股）的return list传入上述代码来得到
+对于某一交易日的仓位管理，可以将较长一段时间（回测时选取了$2019$，所以记得在第一步尽量剔除次新股）的return list传入上述代码来得到
 
 在[Portfolio.py](https://github.com/FDUJiaG/QT_Test/blob/master/codes/Portfolio.py)中，可以返回最小和次小两套特征值和特征向量，分别对应在投资可行域中最小风险组合，以及最佳收益组合（风险稍稍提高，收益明显提高），如下图所示
 
@@ -300,17 +302,149 @@ for k in range(len(ans_index)):
 
 ### 回测
 
+#### 回测准备
+
+- 回测区间：$2019-07-24 → 2019-08-23$ (对于日K策略，回测区间小于一个月意义不大）
+- 股票池为：中国软件, 中兴通讯, 浪潮信息, 用友网络, 宝信软件
+
+```python
+stock_pool = ['600536.SH', '000063.SZ', '000977.SZ', '600588.SH', '600845.SH']
+```
+
+- 无风险利率：设为一年期银行存款，年化$1.5\%$
+- 货币资金收益率：预设为年化$2.5\%$
+- 其他参数：如前所述，或采取默认值
+- 回测时我们根据收盘价进行交易（假设在资金量不大时一定可以成交到模型中计划的数量）
+
+#### 回测过程
+
+在已有的训练、建模、预测后，我们进行模拟交易，投资组合变换的频率默认为$5$个交易日
+
+根据回测区间第一个交易日的行情，进行第一次的**投资组合建仓**（手续费$r_{Buy}=0.05\%$）
+
+由于最小的交易单位是$100$股，我们会向下取$100$的倍数为第$i$支标的持仓股数$Position(Stock_i)$
+
+并按照如下公式更新资产信息：
+
+$Capital(Date)=Capital(Date-1)-r_{Buy}\cdot\sum\limits_{i=1}^NClose\_Buy(Stock_i,Date)\cdot Position(Stock_i)$
+
+$Money\_Lock(Date)=Money\_Lock(Date-1)+\sum\limits_{i=1}^NClose\_{Buy}(Stock_i,Date)\cdot Position(Stock_i)$
+
+$Money\_Rest(Date)=Money\_Rest(Date-1)-(1+r_{Buy})\cdot\sum\limits_{i=1}^NClose\_{Buy}(Stock_i,Date)\cdot Position(Stock_i)$
+
+随后制定平仓（$r_{Sell}=0.16\%$，如果在一个投资组合内，某标的被策略卖出，则会全部卖出，不涉及部分卖出的情况）的择时策略，当持仓非空时，依次进行如下步骤：
+
+1. 推进至回测区间内的下一交易日，对于2-5发生的情形，按照如下公式更新相关资产情况$Money\_Lock(Date)=Money\_Lock(Date-1)-\sum\limits_{i=1}^NClose\_Sell(Stock_i,Date)\cdot Position(Stock_i)$
+   $Money\_Rest(Date)=Money\_Rest(Date-1)+(1-r_{Sell})\cdot\sum\limits_{i=1}^NClose\_{Sell}(Stock_i,Date)\cdot Position(Stock_i)$
+   $Profit(Date)=\sum\limits_{i=1}^N\{(1-r_{Sell})\cdot Close\_Sell(Stock_i,Date)-(1-r_{Buy})\cdot Close\_{Buy}(Stock_i,Date)\}\cdot Position(Stock_i)$
+
+   $Capital(Date)=Capital(Date-1)+Profit(Date)$
+
+2. 当单一持仓标的收益率超过$4\%$时，止盈平仓该标的（GOODSELL），
+   未有符合条件的执行或者全部执行完后下一步
+
+3. 当单一持仓标的亏损率超过$3\%$时，止损平仓该标的(BADSELL)，
+   未有符合条件的执行或者全部执行完后下一步
+
+4. 当建仓后第$4$个交易日只拥有货币资金，则返回投资组合建仓板块；
+   当建仓后第$4$个交易日还存在未平仓的标的：
+
+   - 如果回测周期没结束，进行全部平仓处理（OVERTIMESELL），跳过第四步，返回投资组合建仓板块；
+   - 如果回测周期全部结束，则进行最后一次资金跟新，并输出回测结果。
+
+   未有符合条件的执行则下一步
+
+5. 当单一持仓标的的SVM预测下个交易日为$-1$（下跌时），预判平仓该标的（PredictSELL），
+   未有符合条件的执行或者全部执行完后下一步
+
+6. 执行资金情况更新
+
+7. 返回第一步
+
+**回测过程的简要流程图**如下所示：
+
+ <img src='imag/LoopBackFlow.png' height=550 />
+
+#### 输出评价
+
+回测完成后，会对所有的回测情况进行评估。选取了$4$个经典评价量化策略的指标，既可以对回测效果有很好的刻画，又会一定程度上杜绝过拟合的情形
+
+**收益率**
+
+这是我们最关心的，相当于是回测区间内的收益效率衡量
+
+```python
+def Cal_Return_Rate(seq, yd=250):
+    seqn = len(seq)
+    Return_Rate = (seq[-1] / seq[0]) - 1
+    Annual_Rate = math.pow((seq[-1] / seq[0]), yd / seqn) - 1
+    Return_List = []
+    Base_V = seq[0]
+    for i in range(seqn):
+        if i == 0:
+            Return_List.append(float(0.00))
+        else:
+            ri = (float(seq[i]) - float(Base_V))/float(Base_V)
+            Return_List.append(ri)
+    return Return_Rate, Annual_Rate, Return_List
+```
+
+**回撤率**
 
 
-#### 输出结果
+
+```python
+def Cal_Withdrawal_Rate(seq):
+    Wdl_Rate_List = []
+    max_temp = 0
+    for i in range(len(seq)):
+        max_temp = max(max_temp, seq[i])
+        Wdl_Rate = (max_temp - seq[i]) / max_temp
+        Wdl_Rate_List.append(round(Wdl_Rate, 4))
+    Max_Index = Wdl_Rate_List.index(max(Wdl_Rate_List))
+    return max(Wdl_Rate_List), Max_Index, Wdl_Rate_List
+```
+
+**夏普率及风险**
+
+```python
+def Cal_Sharp_Rate(seq, Rf=0.015, yd=250):
+    seqn = len(seq)
+    seq_return = Cal_Return_Rate(seq)
+    norisk_return = Rf * seqn / yd
+    Risk = float(np.array(seq_return[2]).std())
+    Sharp_Rate = (seq_return[0] - norisk_return) / Risk
+    return Sharp_Rate, Risk
+```
+
+
+
+**信息比率及跟踪误差**
+
+```python
+def Cal_Info_Ratio(seq, seq_base):
+    seq_return = Cal_Return_Rate(seq)
+    seq_base_return = Cal_Return_Rate(seq_base)
+    sigma = float((np.array(seq_return[2]) - np.array(seq_base_return[2])).std())
+    ir = (seq_return[0] - seq_base_return[0]) / sigma
+    return ir, sigma
+```
+
+
+
+#### 回测结果
 
  <img src='imag/LoopBack.png' height=300 />
 
-#### 过程信息
+回测完成后，会返回一些回测的信息
 
- <img src='imag/Capital_Table.png' height=700 />
+#### 资产信息
 
+**资金变动情况**
 
+ <img src='imag/Capital_Table.png' height=720 />
+
+**仍持仓标的**
 
  <img src='imag/Stock_Hold.png' height=60 />
 
