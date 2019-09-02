@@ -127,5 +127,3 @@ import math
 - 对于Return，Withdrawal的可视化展示
 
 ## [阅读完整版](https://fdujiag.github.io/QT_Test)
-
-$Max_{drawdown}(j)=\frac{\max(P_i-P_j)}{P_i},\qquad i=0,1,2,...,T\quad j>i$
